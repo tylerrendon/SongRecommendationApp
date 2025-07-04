@@ -24,7 +24,6 @@ export const loginWithSpotify = async () => {
   const codeChallenge = base64encode(hashed);
 
   const clientId = '0fbb5de8f7e24e119fc3693e59f46150';
-  const redirectUrl = 'http://127.0.0.1:3000/';
   const scope = 'user-read-private user-read-email user-read-currently-playing';
 
   localStorage.setItem('code_verifier', codeVerifier);

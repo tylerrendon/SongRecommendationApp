@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import getCurrentPlaying from './getPlayback.js';
 import { loginWithSpotify } from './spotify.js';
 import getLyrics from './fetchLyrics.js'
-import fetchSimilarSongs from './getSimilarSongs.js';
+import { fetchSimilarSongsWithArt } from './getSimilarSongs.js';
 
 function Dashboard() {
   const [currentSong, setCurrentSong] = useState(null);
@@ -15,14 +15,11 @@ function Dashboard() {
         return;
     };
 
-    getCurrentPlaying(accessToken)
+    getCurrentPlaying()
       .then(song => setCurrentSong(song))
       .catch(err => {
         console.error('error', err);
-        if (err.message.includes("401")) {
-          localStorage.removeItem('access_token');
-          window.location.href = '/';
-        }
+        // Token refresh and redirect is handled in getCurrentPlaying
       });
   }, [accessToken]);
 
@@ -33,7 +30,8 @@ function Dashboard() {
     try{
       const fetchedLyrics=await getLyrics(artist,title);
       setLyrics(fetchedLyrics);
-      const similarSongs=await fetchSimilarSongs(fetchedLyrics);
+      const similarSongsData = await fetchSimilarSongsWithArt(fetchedLyrics);
+      setSimilarSongs(similarSongsData.similarSongs);
     }catch(err){
       console.error('failed',err)
     }
