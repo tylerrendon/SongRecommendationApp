@@ -7,7 +7,6 @@ import { fetchSimilarSongsWithArt } from './getSimilarSongs.js';
 function Dashboard() {
   const [currentSong, setCurrentSong] = useState(null);
   const accessToken = localStorage.getItem('access_token');
-  const [lyrics,setLyrics]=useState(null)
   const [similarSongs, setSimilarSongs] = useState([]);
 
   useEffect(() => {
@@ -24,20 +23,18 @@ function Dashboard() {
       });
   }, [accessToken]);
 
-  const handleGetLyrics=async()=>{
+  const handleGetLyrics = async () => {
     if (!currentSong) return;
-    const artist=currentSong.item.artists[0].name;
-    const title=currentSong.item.name;
-    try{
-      const fetchedLyrics=await getLyrics(artist,title);
-      setLyrics(fetchedLyrics);
+    const artist = currentSong.item.artists[0].name;
+    const title = currentSong.item.name;
+    try {
+      const fetchedLyrics = await getLyrics(artist, title);
       const similarSongsData = await fetchSimilarSongsWithArt(fetchedLyrics);
       setSimilarSongs(similarSongsData.similarSongs);
-    }catch(err){
-      console.error('failed',err)
+    } catch (err) {
+      console.error('failed', err);
     }
-    
-    };
+  };
   
 
   if (!currentSong) return <div>No song is playing right now.</div>;
@@ -50,8 +47,27 @@ function Dashboard() {
         {currentSong.item.artists.map(a => a.name).join(', ')}
       </p>
       <button onClick={handleGetLyrics}>Find Me Similar Songs</button>
+      
+      {similarSongs && similarSongs.length > 0 && (
+        <div>
+          <h2>Similar Songs:</h2>
+          <ul>
+            {similarSongs.map((song, index) => (
+              <li key={index}>
+                {song.name} by {song.artist}
+                {song.coverArt && (
+                  <img 
+                    src={song.coverArt} 
+                    alt={`${song.name} cover`} 
+                    style={{width: '50px', height: '50px', marginLeft: '10px'}}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-    
   );
 }
 
