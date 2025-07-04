@@ -1,9 +1,8 @@
-  import logo from './logo.svg';
+
   import './App.css';
   import { loginWithSpotify } from './spotify.js';
   import {getToken} from './spotifyToken.js'
   import { useEffect } from 'react';
-  import {getCurrentPlaying} from './getPlayback.js'
 
 
 
