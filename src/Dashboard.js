@@ -8,6 +8,7 @@ function Dashboard() {
   const [currentSong, setCurrentSong] = useState(null);
   const accessToken = localStorage.getItem('access_token');
   const [lyrics,setLyrics]=useState(null)
+  const [similarSongs, setSimilarSongs] = useState([]);
 
   useEffect(() => {
     if (!accessToken) {

@@ -1,4 +1,5 @@
 // spotifyLogin.js
+const redirectUrl = 'http://127.0.0.1:3000/';
 export const loginWithSpotify = async () => {
   const generateRandomString = (length) => {
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
